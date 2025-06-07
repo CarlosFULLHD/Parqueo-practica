@@ -1,9 +1,11 @@
 package com.tarea.marcos.service;
 
 import com.tarea.marcos.dto.ParqueoDto;
+import com.tarea.marcos.repository.ParqueoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ParqueoService {
@@ -15,8 +17,20 @@ public class ParqueoService {
 //
 //    Convertirla a ParqueoDto con .stream().map().collect(...).
 //
+private final ParqueoRepository parqueoRepository;
+
+    public ParqueoService(ParqueoRepository parqueoRepository) {
+        this.parqueoRepository = parqueoRepository;
+    }
 
     public List<ParqueoDto> getAllParqueos() {
-        return null;
+
+        return parqueoRepository.findAll().stream()
+                .map(parqueo -> new ParqueoDto(
+                        parqueo.getUbicacion(),
+                        parqueo.isDisponible(),
+                        parqueo.getTarifaHora()
+                ))
+                .collect(Collectors.toList());
     }
 }

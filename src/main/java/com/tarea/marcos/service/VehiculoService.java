@@ -24,4 +24,15 @@ public class VehiculoService {
                 ))
                 .collect(Collectors.toList());
     }
+    //Filtrar por vehiculos activos
+    public List<VehiculoDto> getVehiculosActivos(){
+        return vehiculoRepository.findAll().stream()
+                .filter(vehiculo -> vehiculo.isActivo())
+                        .map(vehiculo -> new VehiculoDto(
+                                vehiculo.getPlaca(),
+                                vehiculo.getTipo(),
+                                vehiculo.isActivo()
+                        ))
+                .collect(Collectors.toList());
+    }
 }

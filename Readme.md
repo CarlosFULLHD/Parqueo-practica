@@ -24,6 +24,10 @@ docker build -t parqueo-db-image ./db
 
 docker run --name parqueo-db -e POSTGRES_PASSWORD=admin123 -p 5433:5432 parqueo-db-image
 ```
+### Docker opcion B
+```bash
+docker run -d --name parqueo-db -e POSTGRES_PASSWORD=admin123 -e POSTGRES_USER=postgres -e POSTGRES_DB=parqueo -p 5433:5432 -v parqueo-data:/var/lib/postgresql/data postgres:17
+```
 
 Esto:
 

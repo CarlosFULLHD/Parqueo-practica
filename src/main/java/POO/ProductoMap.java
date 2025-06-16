@@ -5,12 +5,13 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProductoMap {
     public static void main(String[] args) {
         Map<String, Producto> mapaProductos = new HashMap<>();
 
-        //Agrego tres prductos
+        //Agrego tres productos
         mapaProductos.put("pan", new Producto("Pan", 2, 100));
         mapaProductos.put("agua", new Producto("agua", 1.5, 150));
         mapaProductos.put("cereales", new Producto("cereales", 2.4, 80));
@@ -37,9 +38,12 @@ public class ProductoMap {
         listaProductos.add(new Producto("vino",3,100));
         listaProductos.add(new Producto("cerveza",1.10,150));
 
-        Map<String,Producto> mapaProductos2 = new HashMap<>();
+        Map<String,Producto> mapa = listaProductos.stream()
+                .collect(Collectors.toMap(
+                        Producto::getNombre,
+                        producto -> producto
+                ));
         //Acceso directo producto con map
-
-
+        mapa.get("Chocolate");
     }
 }

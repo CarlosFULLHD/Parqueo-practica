@@ -4,18 +4,28 @@ public class Producto {
     private String nombre;
     private double precio;
     private int stock;
+    private String categoria;
 
     public Producto() {
     }
 
-    public Producto(String nombre, double precio, int stock) {
+    public Producto(String nombre, double precio, int stock, String categoria) {
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
+        this.categoria = categoria;
     }
 
     public String getNombre() {
         return nombre;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public void setNombre(String nombre) {
@@ -48,6 +58,7 @@ public class Producto {
                 "nombre='" + nombre + '\'' +
                 ", precio=" + precio +
                 ", stock=" + stock +
+                ", categoria='" + categoria + '\'' +
                 '}';
     }
 }

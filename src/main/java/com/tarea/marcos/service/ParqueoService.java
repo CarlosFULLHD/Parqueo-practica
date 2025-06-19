@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ParqueoService {
+public class ParqueoService{
 
 //    Tarea 2:
 //    Crear el método getAllParqueos() que haga:

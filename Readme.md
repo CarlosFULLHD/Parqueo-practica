@@ -34,256 +34,169 @@ docker run -d \
 Y despues manualmente inserta datose n la db en la carpeta /db/init.sql
 
 
-## 🧠 TAREAS – Uso de Map y Stream en Java
+## 🧠 TAREA N°1 – Implementar Interfaces para los Servicios
 
-Estas tareas te ayudarán a comprender cómo funcionan los mapas (`Map<K, V>`) y cómo transformar listas usando `stream()`.
+### 🎯 Objetivo:
+Practicar el uso de interfaces en Java para aplicar **polimorfismo** y **principio de inversión de dependencias (SOLID)** dentro de servicios de Spring Boot.
 
 ---
 
-## ✍️ Ejercicio 1 – Crear y acceder a un `Map`
-
-### 🎯 Objetivo:
-Practicar los métodos `.put()`, `.get()`, `.remove()`, `.containsKey()` del `Map` en Java.
-
 ### 📄 Enunciado:
-1. Crea una clase llamada `Producto` con los siguientes atributos:
-    - `String nombre`
-    - `double precio`
-    - `int stock`
-2. Luego, en tu clase `main`, haz lo siguiente:
-    - Crea un `Map<String, Producto>` donde la **clave será el nombre del producto**.
-    - Agrega al menos **3 productos** distintos.
-    - Muestra en consola el producto que tenga como nombre `"Pan"`.
-    - Elimina uno de los productos usando su nombre como clave.
-    - Verifica si existe un producto llamado `"Agua"` y muestra un mensaje dependiendo del resultado.
 
-### 💡 Pistas:
-- Usa `mapa.put("clave", objeto)` para insertar.
-- Usa `mapa.get("clave")` para acceder a un objeto.
-- Usa `mapa.containsKey("clave")` para verificar si existe.
-- Usa `mapa.remove("clave")` para eliminar.
-- Puedes agregar un método `mostrar()` dentro de `Producto` para imprimir los datos fácilmente.
+Actualmente los servicios (`UsuarioService`, `ParqueoService`, `VehiculoService`, `ReservaService`) **no tienen una interfaz asociada**.
 
----
+Tu tarea será lo siguiente:
 
-## ✍️ Ejercicio 2 – Convertir `List<Producto>` a `Map<String, Producto>`
+### 🛠 ¿Qué debes hacer?
 
-### 🎯 Objetivo:
-Practicar el uso de `.stream()` con `.collect(Collectors.toMap(...))`.
+1. **Crear una interfaz por cada servicio**, dentro del paquete `com.tarea.marcos.service`.
 
-### 📄 Enunciado:
-1. Crea una `ArrayList<Producto>` con al menos **5 productos distintos**.
-2. Convierte esa lista en un `Map<String, Producto>` donde la clave sea el `nombre` del producto.
-3. Accede directamente a un producto usando su nombre desde el `Map`.
+   Por ejemplo:
+   ```java
+   public interface UsuarioServiceInterface {
+       List<UsuarioDto> getAllUsers();
+   }
+   ```
 
-### 💡 Pistas:
-- Usa:
+Hacer que cada clase de servicio implemente su interfaz correspondiente:
+
+   ```java
+   public class UsuarioService implements UsuarioServiceInterface {
+   ...
+   }
+   ```
+
+Verifica que todos los métodos públicos ya existentes estén declarados también en la interfaz.
+
+💡 Ejemplo completo (Usuario):
+ Interfaz:
+
   ```java
-  Map<String, Producto> mapa = lista.stream()
-      .collect(Collectors.toMap(
-          Producto::getNombre, // clave
-          producto -> producto // valor
-      ));
+   package com.tarea.marcos.service;
+   
+   import com.tarea.marcos.dto.UsuarioDto;
+   import java.util.List;
+   
+   public interface UsuarioServiceInterface {
+      List<UsuarioDto> getAllUsers();
+   }
 
-Una vez que tengas el mapa, puedes hacer mapa.get("Leche") para obtener ese producto directamente.
+   ```
+
+✅ Implementación:
+  ```java
+   @Service
+   public class UsuarioService implements UsuarioServiceInterface {
+       ...
+   }
+
+   ```
+
+### 📋 Servicios que debes modificar:
+UsuarioService → crea: UsuarioServiceInterface
+
+ParqueoService → crea: ParqueoServiceInterface
+
+ReservaService → crea: ReservaServiceInterface
+
+VehiculoService → crea: VehiculoServiceInterface
+
+### ✅ Criterios de cumplimiento:
+Se crean correctamente las 4 interfaces.
+
+Las clases implementan las interfaces.
+
+Las firmas de métodos coinciden.
+
+El código compila y funciona igual que antes.
+
+### 🧠 ¿Por qué esto es importante?
+Te prepara para trabajar con principios SOLID (especialmente "Dependency Inversion").
+
+Te permite aplicar inyección de dependencias con facilidad.
+
+Facilita testing con mocks o implementación alternativa.
+
+Refuerza herencia + polimorfismo con interfaces.
 
 
----
 
-## ✍️ Ejercicio 3 – Agrupar productos por categoría usando `groupingBy`
+
+## 🧠 TAREA N°2 – Herencia y Polimorfismo: Sistema de Empleados
 
 ### 🎯 Objetivo:
-Aprender a usar `Collectors.groupingBy()` para clasificar objetos de una lista según una propiedad.
+Aplicar herencia y polimorfismo creando una jerarquía de clases basada en `Empleado`.
 
 ---
 
 ### 📄 Enunciado:
 
-1. Agrega un atributo `String categoria` a la clase `Producto`.
-2. Llena una lista (`List<Producto>`) con productos de **varias categorías** (por ejemplo: `"Bebidas"`, `"Panadería"`, `"Frutas"`).
-3. Agrupa los productos en un `Map<String, List<Producto>>` según su categoría.
-4. Recorre el mapa y muestra todos los productos agrupados por categoría en consola.
+Vas a construir una jerarquía simple de empleados en una empresa.
 
 ---
 
-### 💡 Pistas:
+### 👷‍♂️ Paso 1 – Crear clase base `Empleado`
 
-- Asegúrate de tener **productos con distintas categorías repetidas** (al menos 2 productos por categoría).
-- Para agrupar, puedes usar el siguiente código:
+Debe tener:
+- `String nombre`
+- `int edad`
+- `double salario`
 
-```java
-Map<String, List<Producto>> agrupado = lista.stream()
-    .collect(Collectors.groupingBy(Producto::getCategoria));
-
-```
-Para recorrer y mostrar el contenido del Map:
+✅ Debe tener un método:
 
 
 ```java
-
-agrupado.forEach((categoria, productos) -> {
-    System.out.println("Categoría: " + categoria);
-    productos.forEach(p -> p.mostrar());
-});
-
-```
-
-Claro, aquí tienes el **ejercicio integrador completo en Markdown** para que puedas copiarlo directamente a tu `README.md` o material de clase:
-
-
-## ✍️ Ejercicio Final – Sistema de Inventario de Tienda
-
-### 🎯 Objetivo:
-Aplicar el manejo de `ArrayList`, `Map`, streams, filtros y agrupamientos en un contexto práctico.
-
----
-
-### 📄 Contexto:
-Desarrollarás un sistema de inventario básico para una tienda. Vas a modelar los productos, organizarlos por categoría, buscar elementos específicos y optimizar consultas con mapas.
-
----
-
-### 🧱 Estructura de clase sugerida:
-
-```java
-public class Producto {
-    private String nombre;
-    private String categoria;
-    private double precio;
-    private int stock;
-    private boolean activo;
-
-    public Producto(String nombre, String categoria, double precio, int stock, boolean activo) {
-        this.nombre = nombre;
-        this.categoria = categoria;
-        this.precio = precio;
-        this.stock = stock;
-        this.activo = activo;
-    }
-
-    public String getNombre() { return nombre; }
-    public String getCategoria() { return categoria; }
-    public double getPrecio() { return precio; }
-    public int getStock() { return stock; }
-    public boolean isActivo() { return activo; }
-
-    public void mostrar() {
-        System.out.println(nombre + " | " + categoria + " | $" + precio + " | Stock: " + stock + " | Activo: " + activo);
-    }
-}
+public void mostrarInformacion();
 ````
 
----
-
-## 🧪 Actividades a implementar en `main()`:
-
-### ✅ 1. Crear una `List<Producto>` con datos de ejemplo
-
-Agrega al menos **10 productos**, con categorías como:
-
-* "Bebidas"
-* "Panadería"
-* "Lácteos"
-* "Snacks"
+Que imprima los datos básicos del empleado.
 
 ---
 
-### ✅ 2. Convertir la lista en `Map<String, Producto>`
+### Paso 2 – Crear dos subclases
 
-Donde la **clave sea el nombre del producto**.
+1. `Programador`:
 
-💡 Usa:
+   * Atributo adicional: `String lenguajePrincipal`
+   * Sobrescribe `mostrarInformacion()` para incluir el lenguaje.
 
-```java
-Map<String, Producto> mapa = lista.stream()
-    .collect(Collectors.toMap(
-        Producto::getNombre,
-        p -> p,
-        (a, b) -> a // en caso de duplicados, mantener el primero
-    ));
+2. `Diseñador`:
+
+   * Atributo adicional: `boolean usaPhotoshop`
+   * Sobrescribe `mostrarInformacion()` para mostrar si usa Photoshop.
+
+---
+
+### Paso 3 – Probar en el `main()`
+
+Crea un `ArrayList<Empleado>` con objetos `Programador` y `Diseñador`.
+Llama a `mostrarInformacion()` sobre cada uno usando un **bucle for-each**.
+
+✅ Esto debe mostrar comportamiento **polimórfico**.
+
+---
+
+### 🧾 Ejemplo esperado en consola:
+
+```
+👨‍💻 Programador: Carlos, 30 años, $3500 - Lenguaje: Java
+🎨 Diseñador: Ana, 28 años, $3000 - Usa Photoshop: Sí
+👨‍💻 Programador: Luis, 26 años, $3200 - Lenguaje: Python
+🎨 Diseñador: Marta, 35 años, $3100 - Usa Photoshop: No
 ```
 
 ---
 
-### ✅ 3. Filtrar productos activos (activo == true)
+### 💡 Pistas:
 
-💡 Usa:
+* Usa `@Override` al redefinir `mostrarInformacion()`
+* Llama a `super()` desde los constructores de subclases
+* Puedes usar emojis en consola si gustas (`👨‍💻`, `🎨`) para hacerlo más visual
 
-```java
-List<Producto> activos = lista.stream()
-    .filter(Producto::isActivo)
-    .collect(Collectors.toList());
-```
 
-Muestra los productos activos en consola.
 
----
 
-### ✅ 4. Agrupar productos por categoría
 
-💡 Usa:
 
-```java
-Map<String, List<Producto>> agrupados = lista.stream()
-    .collect(Collectors.groupingBy(Producto::getCategoria));
-```
-
-Luego recorre el `Map` con:
-
-```java
-agrupados.forEach((categoria, productos) -> {
-    System.out.println("Categoría: " + categoria);
-    productos.forEach(p -> p.mostrar());
-});
-```
-
----
-
-### ✅ 5. Buscar productos caros y con poco stock
-
-Filtra productos con:
-
-* Precio mayor a 15
-* Stock menor a 10
-
-💡 Usa:
-
-```java
-List<Producto> filtroAvanzado = lista.stream()
-    .filter(p -> p.getPrecio() > 15 && p.getStock() < 10)
-    .collect(Collectors.toList());
-```
-
----
-
-### BONUS – Entrada por teclado (Scanner)
-
-Permite que el usuario ingrese el nombre de un producto y:
-
-* Verifica si existe con `mapa.containsKey(nombre)`
-* Si existe, muestra el producto
-* Si no, imprime `"Producto no encontrado"`
-
----
-
-## 🧾 Resultado esperado (ejemplo):
-
-```
-🛒 PRODUCTOS ACTIVOS:
-Pan | Panadería | $1.5 | Stock: 10 | Activo: true
-Leche | Lácteos | $2.8 | Stock: 5 | Activo: true
-
-📦 PRODUCTOS AGRUPADOS:
-Categoría: Bebidas
-- Agua
-- Jugo
-
-Categoría: Snacks
-- Papas
-- Galletas
-
-⚠ Productos caros con bajo stock:
-Queso | Lácteos | $18.0 | Stock: 3
-```
 
 

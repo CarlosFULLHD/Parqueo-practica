@@ -1,6 +1,7 @@
-package com.tarea.marcos.service;
+package com.tarea.marcos.serviceImplements;
 
 import com.tarea.marcos.dto.ReservaDto;
+import com.tarea.marcos.interfaceService.InterfaceReservaService;
 import com.tarea.marcos.repository.ReservaRepository;
 import org.springframework.stereotype.Service;
 
@@ -8,10 +9,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ReservaService {
+public class ReservaServiceImpl implements InterfaceReservaService {
     private final ReservaRepository reservaRepository;
 
-    public ReservaService(ReservaRepository reservaRepository) {
+    public ReservaServiceImpl(ReservaRepository reservaRepository) {
         this.reservaRepository = reservaRepository;
     }
     //Mostrar todas las reservas

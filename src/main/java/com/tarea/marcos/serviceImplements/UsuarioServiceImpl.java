@@ -1,7 +1,7 @@
-package com.tarea.marcos.service;
+package com.tarea.marcos.serviceImplements;
 
 import com.tarea.marcos.dto.UsuarioDto;
-import com.tarea.marcos.entity.Usuario;
+import com.tarea.marcos.interfaceService.InterfaceUsuarioService;
 import com.tarea.marcos.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioService {
+public class UsuarioServiceImpl implements InterfaceUsuarioService {
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 

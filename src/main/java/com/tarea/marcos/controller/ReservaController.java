@@ -1,7 +1,7 @@
 package com.tarea.marcos.controller;
 
 import com.tarea.marcos.dto.ReservaDto;
-import com.tarea.marcos.service.ReservaService;
+import com.tarea.marcos.serviceImplements.ReservaServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,9 +12,9 @@ import java.util.List;
 @RequestMapping("/api/reservas")
 
 public class ReservaController {
-    private final ReservaService reservaService;
+    private final ReservaServiceImpl reservaService;
 
-    public ReservaController(ReservaService reservaService) {
+    public ReservaController(ReservaServiceImpl reservaService) {
         this.reservaService = reservaService;
     }
     //Obtener todas las resrvas

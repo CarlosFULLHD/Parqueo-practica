@@ -1,6 +1,7 @@
-package com.tarea.marcos.service;
+package com.tarea.marcos.serviceImplements;
 
 import com.tarea.marcos.dto.VehiculoDto;
+import com.tarea.marcos.interfaceService.InterfaceVehiculoService;
 import com.tarea.marcos.repository.VehiculoRepository;
 import org.springframework.stereotype.Service;
 
@@ -8,10 +9,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class VehiculoService {
+public class VehiculoServiceImpl implements InterfaceVehiculoService {
     private final VehiculoRepository vehiculoRepository;
 
-    public VehiculoService(VehiculoRepository vehiculoRepository) {
+    public VehiculoServiceImpl(VehiculoRepository vehiculoRepository) {
         this.vehiculoRepository = vehiculoRepository;
     }
     //Mostrar todos los vehiculos

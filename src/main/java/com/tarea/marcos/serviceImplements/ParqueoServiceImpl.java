@@ -1,6 +1,7 @@
-package com.tarea.marcos.service;
+package com.tarea.marcos.serviceImplements;
 
 import com.tarea.marcos.dto.ParqueoDto;
+import com.tarea.marcos.interfaceService.InterfaceParqueoService;
 import com.tarea.marcos.repository.ParqueoRepository;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ParqueoService{
+public class ParqueoServiceImpl implements InterfaceParqueoService {
 
 //    Tarea 2:
 //    Crear el método getAllParqueos() que haga:
@@ -19,7 +20,7 @@ public class ParqueoService{
 //
 private final ParqueoRepository parqueoRepository;
 
-    public ParqueoService(ParqueoRepository parqueoRepository) {
+    public ParqueoServiceImpl(ParqueoRepository parqueoRepository) {
         this.parqueoRepository = parqueoRepository;
     }
 

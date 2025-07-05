@@ -37,13 +37,6 @@ Y despues manualmente inserta datose n la db en la carpeta /db/init.sql
 
 Aprenderás a lanzar excepciones simples en la capa `service`, útiles para validar condiciones inesperadas como listas vacías, datos nulos o errores durante una conversión.
 
-
-# 🧪 TAREAS – Manejo de Excepciones en Servicios (Java + Spring Boot)
-
-Aprenderás a lanzar excepciones simples en la capa `service`, útiles para validar condiciones inesperadas como listas vacías, datos nulos o errores durante una conversión.
-
----
-
 ## ✍️ Ejercicio 1 – Validar lista vacía
 
 ### 🎯 Objetivo:

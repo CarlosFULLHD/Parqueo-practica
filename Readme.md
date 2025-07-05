@@ -37,11 +37,6 @@ Y despues manualmente inserta datose n la db en la carpeta /db/init.sql
 
 Aprenderás a lanzar excepciones simples en la capa `service`, útiles para validar condiciones inesperadas como listas vacías, datos nulos o errores durante una conversión.
 
----
-Claro, aquí tienes todo listo en formato **Markdown** para que puedas copiar y pegar directamente en tu `README.md` o entregarlo como guía al estudiante. Las instrucciones están pensadas para que el estudiante **solo agregue las validaciones necesarias** (como `throw new IllegalArgumentException(...)`), sin necesidad de cambiar controladores ni agregar manejo global de errores todavía.
-
----
-
 
 # 🧪 TAREAS – Manejo de Excepciones en Servicios (Java + Spring Boot)
 

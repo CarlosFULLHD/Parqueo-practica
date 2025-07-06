@@ -1,0 +1,46 @@
+package com.tarea.marcos.serviceImplements;
+
+import com.tarea.marcos.dto.VehiculoDto;
+import com.tarea.marcos.entity.Vehiculo;
+import com.tarea.marcos.interfaceService.InterfaceVehiculoService;
+import com.tarea.marcos.repository.VehiculoRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class VehiculoServiceImpl implements InterfaceVehiculoService {
+    private final VehiculoRepository vehiculoRepository;
+
+    public VehiculoServiceImpl(VehiculoRepository vehiculoRepository) {
+        this.vehiculoRepository = vehiculoRepository;
+    }
+    //Mostrar todos los vehiculos
+    public List<VehiculoDto> getAllVehiculos(){
+        List<Vehiculo> vehiculos = vehiculoRepository.findAll();
+        boolean placaNula = vehiculos.stream().anyMatch(vehiculo ->
+                vehiculo.getPlaca()==null);
+        if(placaNula){
+            throw new IllegalArgumentException("Vehiculo con placa nula no encontrada");
+        }
+        return vehiculos.stream()
+                .map(vehiculo -> new VehiculoDto(
+                        vehiculo.getPlaca(),
+                        vehiculo.getTipo(),
+                        vehiculo.isActivo()
+                ))
+                .collect(Collectors.toList());
+    }
+    //Filtrar por vehiculos activos
+    public List<VehiculoDto> getVehiculosActivos(){
+        return vehiculoRepository.findAll().stream()
+                .filter(vehiculo -> vehiculo.isActivo())
+                        .map(vehiculo -> new VehiculoDto(
+                                vehiculo.getPlaca(),
+                                vehiculo.getTipo(),
+                                vehiculo.isActivo()
+                        ))
+                .collect(Collectors.toList());
+    }
+}

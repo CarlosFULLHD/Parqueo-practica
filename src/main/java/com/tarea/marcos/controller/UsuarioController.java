@@ -1,7 +1,7 @@
 package com.tarea.marcos.controller;
 
 import com.tarea.marcos.dto.UsuarioDto;
-import com.tarea.marcos.service.UsuarioService;
+import com.tarea.marcos.serviceImplements.UsuarioServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
+    private final UsuarioServiceImpl usuarioService;
 
     @GetMapping
     public List<UsuarioDto> getAllUsers() {

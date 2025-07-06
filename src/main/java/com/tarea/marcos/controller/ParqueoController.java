@@ -2,7 +2,7 @@ package com.tarea.marcos.controller;
 
 
 import com.tarea.marcos.dto.ParqueoDto;
-import com.tarea.marcos.service.ParqueoService;
+import com.tarea.marcos.serviceImplements.ParqueoServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ParqueoController {
 
-    private final ParqueoService parqueoService;
+    private final ParqueoServiceImpl parqueoService;
 
     @GetMapping
     public List<ParqueoDto> getAllParqueos() {

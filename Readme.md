@@ -20,74 +20,135 @@ git checkout marcos-branch
 3. **Levantar base de datos con Docker**
 
 ```bash
-docker build -t parqueo-db-image ./db
+docker run -d \
+  --name parqueo-db-v2 \
+  -e POSTGRES_DB=parkingdb \
+  -e POSTGRES_USER=parkuser \
+  -e POSTGRES_PASSWORD=parksecret \
+  -p 5434:5432 \
+  -v parking-data:/var/lib/postgresql/data \
+  postgres:17
 
-docker run --name parqueo-db -e POSTGRES_PASSWORD=admin123 -p 5433:5432 parqueo-db-image
 ```
 
-Esto:
+Y despues manualmente inserta datose n la db en la carpeta /db/init.sql
 
-- Usa una imagen con init.sql preconfigurado.
-- Crea tres tablas: usuarios, parqueos, vehiculos.
-- Inserta 3 registros por tabla con datos de prueba.
+# 🧪 TAREAS – Manejo de Excepciones en Servicios (Java + Spring Boot)
+
+Aprenderás a lanzar excepciones simples en la capa `service`, útiles para validar condiciones inesperadas como listas vacías, datos nulos o errores durante una conversión.
+
+## ✍️ Ejercicio 1 – Validar lista vacía
+
+### 🎯 Objetivo:
+Lanzar una excepción si el repositorio devuelve una lista vacía.
+
+### 📄 Enunciado:
+Edita el método `getAllParqueos()` en `ParqueoServiceImpl` para que:
+
+- Si la lista de parqueos está vacía (`size == 0`), se lance una excepción del tipo `RuntimeException` con el mensaje:
+
+```java
+throw new RuntimeException("No hay parqueos disponibles.");
+````
+
+---
+
+## ✍️ Ejercicio 2 – Validar datos nulos
+
+### 🎯 Objetivo:
+
+Lanzar excepción si se encuentra un dato nulo o incorrecto.
+
+### 📄 Enunciado:
+
+En `getAllVehiculos()` dentro de `VehiculoServiceImpl`:
+
+* Verifica que ningún vehículo tenga `null` en el campo `placa`.
+
+* Si ocurre, lanza:
+
+```java
+throw new IllegalArgumentException("Vehículo con placa nula encontrado.");
+```
+
+📌 Solo necesitas agregar esta verificación antes del `stream()`.
+
+---
+
+## ✍️ Ejercicio 3 – Captura con try-catch (solo imprimir)
+
+### 🎯 Objetivo:
+
+Usar `try-catch` en la capa `service` para capturar errores y continuar el flujo.
+
+### 📄 Enunciado:
+
+Edita el método `getAllUsers()` en `UsuarioServiceImpl`:
+
+* Usa un bloque `try-catch` para envolver el `stream().map()`.
+
+* Si ocurre algún error, imprime:
+
+```java
+System.out.println("Error al convertir usuarios: " + e.getMessage());
+```
+
+* Y retorna una lista vacía (`List.of()`).
+
+💡 Ejemplo:
+
+```java
+try {
+    return usuarioRepository.findAll().stream()
+        .map(usuario -> new UsuarioDto(...))
+        .collect(Collectors.toList());
+} catch (Exception e) {
+    System.out.println("Error al convertir usuarios: " + e.getMessage());
+    return List.of();
+}
+```
+
+---
+
+## ✍️ Ejercicio 4 (BONUS) – Excepción personalizada
+
+### 🎯 Objetivo:
+
+Crear y lanzar una excepción propia.
+
+### 📄 Enunciado:
+
+1. Crea una clase nueva en `exceptions/NoReservaFoundException.java`:
+
+```java
+public class NoReservaFoundException extends RuntimeException {
+    public NoReservaFoundException(String message) {
+        super(message);
+    }
+}
+```
+
+2. En `ReservaServiceImpl`, si la lista está vacía:
+
+```java
+throw new NoReservaFoundException("No se encontraron reservas.");
+```
+
+🎁 *Este ejercicio es opcional y te prepara para manejo global de errores con `@ControllerAdvice` más adelante.*
+
+---
+
+## ✅ Recomendaciones
+
+* No necesitas modificar los controladores, solo la lógica interna de los servicios.
+* Usa mensajes claros en las excepciones.
+* Asegúrate de que el proyecto compile correctamente antes y después de aplicar los cambios.
+
+```
 
 
 
-## TAREAS
-Controladores y repositorios ya están listos. 
-
-Tú debes trabajar solo en los servicios.
-
-📌 Ejercicio 1 – UsuarioService
-Implementa getAllUsers() que:
-
-Obtiene la lista de usuarios desde el repositorio.
-
-Convierte cada Usuario a UsuarioDto con .stream().map().collect(...).
-
-📌 Ejercicio 2 – ParqueoService
-Implementa getAllParqueos() que:
-
-Devuelve solo los campos ubicacion, disponible y tarifaHora en el DTO.
 
 
-📌 Ejercicio 3 – Crear entidad Vehiculo y su servicio
-Objetivo: Modelar una nueva entidad con distintos tipos de datos.
 
-🛠️ Crea:
 
-La entidad Vehiculo con los campos: placa (String), tipo (String), color (String), anio (int), activo (boolean).
-
-Un DTO VehiculoDto con solo: placa, tipo, activo.
-
-El método getAllVehiculos() en VehiculoService que convierte Vehiculo → VehiculoDto.
-
-📌 Ejercicio 4 – Filtrar vehículos activos
-Objetivo: Filtrar colecciones usando .filter() y .collect().
-
-🛠️ En VehiculoService, crea un método getVehiculosActivos() que:
-
-Devuelva solo los vehículos donde activo == true.
-
-Aplique .filter() para hacer la selección y luego .map() para retornar DTOs.
-
-📌 Ejercicio 5 – Combinar entidades: Reserva
-Objetivo: Relacionar entidades y mapear múltiples datos.
-
-🛠️ Crea:
-
-La entidad Reserva con relaciones @ManyToOne a Usuario y Vehiculo, y los campos: fechaInicio, fechaFin, estado.
-
-Un DTO ReservaDto que contenga: nombreUsuario, placaVehiculo, y estado.
-
-Un método getAllReservas() en ReservaService que retorne todos los ReservaDto usando .map() para unir los datos.
-
-💡 Tip: Puedes acceder al nombre del usuario con reserva.getUsuario().getNombre() y la placa del vehículo con reserva.getVehiculo().getPlaca().
-
-📌 Ejercicio 6 – Extra: Añade Swagger y las configuraciones de open api para probar los endpoints
-
-Tambien realiza el controlador necesario para probar las reservas y hacer un get all reservas
-
-💡 Tip: Ayudate de los proyectos pasados del parqueo y otros que practicaste para realizar esto, 
-
-usa DTO's para toda consulta, no es necesario que hagas otros endpoinst mas que Listas de Get all resrvations, vehicles, users, parkings 

@@ -1,6 +1,7 @@
 package com.tarea.marcos.serviceImplements;
 
 import com.tarea.marcos.dto.ParqueoDto;
+import com.tarea.marcos.entity.Parqueo;
 import com.tarea.marcos.interfaceService.InterfaceParqueoService;
 import com.tarea.marcos.repository.ParqueoRepository;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,16 @@ private final ParqueoRepository parqueoRepository;
     }
 
     public List<ParqueoDto> getAllParqueos() {
-
-        return parqueoRepository.findAll().stream()
-                .map(parqueo -> new ParqueoDto(
-                        parqueo.getUbicacion(),
-                        parqueo.isDisponible(),
-                        parqueo.getTarifaHora()
-                ))
-                .collect(Collectors.toList());
+        List<Parqueo> parqueos = parqueoRepository.findAll();
+        if(parqueos.isEmpty()) {
+            throw new RuntimeException("No hay parqueos disponibles");
+        }
+            return parqueos.stream()
+                    .map(parqueo -> new ParqueoDto(
+                            parqueo.getUbicacion(),
+                            parqueo.isDisponible(),
+                            parqueo.getTarifaHora()
+                    ))
+                    .collect(Collectors.toList());
+        }
     }
-}

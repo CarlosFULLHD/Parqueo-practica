@@ -24,13 +24,17 @@ public class UsuarioServiceImpl implements InterfaceUsuarioService {
 //    Convertir cada Usuario a UsuarioDto con .stream().map().collect().
 
     public List<UsuarioDto> getAllUsers() {
-        return usuarioRepository.findAll().stream()
-                .map(usuario -> new UsuarioDto(
-                        usuario.getNombre(),
-                        usuario.getCorreo(),
-                        usuario.getRol()
-                ))
-                .collect(Collectors.toList());
+        try {
+            return usuarioRepository.findAll().stream()
+                    .map(usuario -> new UsuarioDto(
+                            usuario.getNombre(),
+                            usuario.getCorreo(),
+                            usuario.getRol()
+                    ))
+                    .collect(Collectors.toList());
+        }catch(Exception e){
+            System.out.println("Error al convertir usuarios: " + e.getMessage());
+            return List.of();
+        }
     }
-
 }

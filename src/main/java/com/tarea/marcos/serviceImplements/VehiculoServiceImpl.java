@@ -1,6 +1,7 @@
 package com.tarea.marcos.serviceImplements;
 
 import com.tarea.marcos.dto.VehiculoDto;
+import com.tarea.marcos.entity.Vehiculo;
 import com.tarea.marcos.interfaceService.InterfaceVehiculoService;
 import com.tarea.marcos.repository.VehiculoRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,13 @@ public class VehiculoServiceImpl implements InterfaceVehiculoService {
     }
     //Mostrar todos los vehiculos
     public List<VehiculoDto> getAllVehiculos(){
-        return vehiculoRepository.findAll().stream()
+        List<Vehiculo> vehiculos = vehiculoRepository.findAll();
+        boolean placaNula = vehiculos.stream().anyMatch(vehiculo ->
+                vehiculo.getPlaca()==null);
+        if(placaNula){
+            throw new IllegalArgumentException("Vehiculo con placa nula no encontrada");
+        }
+        return vehiculos.stream()
                 .map(vehiculo -> new VehiculoDto(
                         vehiculo.getPlaca(),
                         vehiculo.getTipo(),
